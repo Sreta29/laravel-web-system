@@ -24,7 +24,7 @@
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('configuration.category.index')" :active="request()->routeIs('dashboard')">
+                        <x-nav-link :href="route('configuration.categories.index')" :active="request()->routeIs('dashboard')">
                             {{ __('Manage Code') }}
                         </x-nav-link>
                     </div>

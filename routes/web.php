@@ -4,9 +4,12 @@ use App\Http\Controllers\ConfigurationCodeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SubCategoryController;
 use App\Models\ConfigurationCode;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -57,18 +60,17 @@ Route::resource('/configuration/admins', RoleController::class)->names([
     'destroy' => 'configuration.admins.delete', 
 ]);
 
-Route::resource('/configuration/category', ConfigurationCodeController::class)->names([
-    'index' => 'configuration.category.index', //list
-    'create' => 'configuration.category.create', //pergi ke page create
-    'store' => 'configuration.category.store', //store data
-    'update' => 'configuration,category.edit', //pergi ke page edit
-    'show' => 'configuration.category.update', //update data
-    'destroy' => 'configuration.category.delete', 
+Route::resource('configuration/categories', CategoryController::class)->names([
+    'index' => 'configuration.categories.index', //list
+    'create' => 'configuration.categories.create', //pergi ke page create
+    'store' => 'configuration.categories.store', //store data
+    'update' => 'configuration,categories.edit', //pergi ke page edit
+    'show' => 'configuration.categories.show', //update data
+    'destroy' => 'configuration.categories.delete',
 ]);
 
-Route::get('/configuration/category/kod/{kategori}/create', [ConfigurationCodeController::class, 'create_category'])->name('category.kod.create');
-
-
+Route::get('categories/{category}/subcategories/create', [SubCategoryController::class, 'create'])->name('subcategories.create');
+Route::post('categories/{category}/subcategories', [SubCategoryController::class, 'store'])->name('subcategories.store');
 
 
 

@@ -1,85 +1,24 @@
-@extends('layouts.app') <!-- Extend the master.blade.php file -->
+@extends('layouts.app')
 
-@section('content') <!-- Start the content section -->
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white border rounded shadow p-4">
-              <div class="border-b p-2">
-                <!-- Header content goes here -->
-                Add New Category
-              </div>
-              <div class="p-2">
-                <!-- Body content goes here -->
-                @if(Session::has('message'))
-                  <div class="bg-green-500 text-white px-4 py-2 rounded">
-                    <!-- Alert content goes here -->
-                    {{ Session::get('message') }}
-                  </div>
-                @endif
-                <form method="post" action="{{ route('configuration.category.store') }}" enctype="multipart/form-data">
-                @csrf
-                    <table class="min-w-full divide-y divide-gray-200">
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">Category ID</td>
-                            <td class="px-6 py-4">
-                                <input type="text" name="code" class="p-2 border rounded-md w-full">
-                                @error('code')
-                                    <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </td>
-                        </tr>
-                        <!-- ... similar for other rows ... -->
-                        <!-- <tr>
-                            <td class="px-6 py-4 whitespace-nowrap"> Description</td>
-                            <td class="px-6 py-4">
-                                <input type="text" name="rolename" class="p-2 border rounded-md w-full">
-                                @error('rolename')
-                                    <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </td>
-                        </tr> -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap"> Category</td>
-                            <td class="px-6 py-4">
-                                <input type="text" name="category" class="p-2 border rounded-md w-full">
-                                @error('category')
-                                    <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </td>
-                        </tr>                     
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap"> Status</td>
-                            <td class="px-6 py-4">
-                                <input type="radio" name="status" value="1" class="p-2 border rounded-md"> active 
-                                <input type="radio" name="status" value="0" class="p-2 border rounded-md"> inactive
-                                @error('status')
-                                    <span class="text-red-500">{{ $message }}</span>
-                                @enderror
-                            </td>
-                        </tr>
-                    
-                        <tr>
-                            <td class="px-6 py-4"></td>
-                            <td class="px-6 py-4">
-                                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-                                    Submit
-                                </button>
-                                
-                                <a href="{{ route('configuration.users.index') }}" class="button-style">
-                                    <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-50">
-                                        Cancel
-                                    </button>
-                                </a>
-                                      
-                            </td>
-                        </tr>
-                    </tbody>
-                    </table>
-                </form>
-
-              </div>
-            </div>
+@section('content')
+<div class="container">
+    <h1>Add Category</h1>
+    <form method="POST" action="{{ route('configuration.categories.store') }}">
+        @csrf
+        <div class="form-group">
+            <label for="name">Category Name</label>
+            <input type="text" class="form-control" id="name" name="name" required>
         </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+    <h2 class="mt-5">Categories</h2>
+    <div class="d-flex flex-wrap">
+        @foreach($categories as $category)
+            <button class="btn btn-secondary m-2">{{ $category->name }}</button>
+        @endforeach
     </div>
-@endsection <!-- End the content section -->
+</div>
+@endsection
+
+
