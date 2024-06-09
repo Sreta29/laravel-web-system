@@ -34,7 +34,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('admin/Users/create');
+        $roles = Role::all();
+        return view('admin/Users/create',[
+            'roles' => $roles
+        ]);
     }
 
     /**
@@ -47,7 +50,8 @@ class UserController extends Controller
             'username' => 'nullable',
             'email' => 'required',
             'password' => 'nullable',
-            'status' => 'nullable'
+            'status' => 'nullable',
+            'role' => 'nullable',
         ]);
 
         User::create($validated);
@@ -61,7 +65,8 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $users = User::find($id);
-        return view('admin/Users/edit',['user' => $users]);
+        $roles = Role::all();
+        return view('admin/Users/edit',['user' => $users, 'roles' => $roles]);
     }
 
     /**
@@ -81,8 +86,9 @@ class UserController extends Controller
             'name' => 'required',
             'username' => 'nullable',
             'email' => 'required',
-            'password' => 'nullable|min:8|confirmed',
-            'status' => 'nullable'
+            'password' => 'nullable',
+            'status' => 'nullable',
+            'role' => 'nullable'
         ]);
 
         $users = User::find($id);

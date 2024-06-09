@@ -24,10 +24,11 @@
                         <tr>
                           <td class="px-6 py-4 whitespace-nowrap">Role</td>
                             <td class="px-6 py-4">
-                            <select name="role" class="p-2 border rounded-md w-full">
-                                <option value="system admin" @if($user->role == 'system admin') selected @endif>System Admin</option>
-                                <option value="hr manager" @if($user->role == 'hr manager') selected @endif>HR Manager</option>
-                                <option value="collector" @if($user->role == 'collector') selected @endif>Collector</option>
+                            <select id="roles" name="role" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option>Choose a Role</option>
+                                @foreach($roles as $item)
+                                    <option value="{{ $item->rolename }}" @if($user->role == $item->rolename) selected @endif>{{ $item->rolename }}</option>
+                                @endforeach
                             </select>
                                 @error('role')
                                     <span class="text-red-500">{{ $message }}</span>
@@ -62,7 +63,7 @@
                                 @enderror
                             </td>
                         </tr>
-                        <!-- <tr>
+                        <tr>
                             <td class="px-6 py-4 whitespace-nowrap">Password</td>
                             <td class="px-6 py-4">
                                 <input type="password" name="password" value="{{$user->password}}" class="p-2 border rounded-md w-full">
@@ -70,7 +71,7 @@
                                     <span class="text-red-500">{{ $message }}</span>
                                 @enderror
                             </td>
-                        </tr> -->
+                        </tr>
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap"> Status</td>
                             <td class="px-6 py-4">

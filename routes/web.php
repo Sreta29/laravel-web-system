@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderListController;
 use App\Http\Controllers\ConfigurationCodeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -60,7 +61,7 @@ Route::resource('/configuration/admins', RoleController::class)->names([
     'destroy' => 'configuration.admins.delete', 
 ]);
 
-Route::resource('configuration/categories', CategoryController::class)->names([
+Route::resource('/configuration/categories', CategoryController::class)->names([
     'index' => 'configuration.categories.index', //list
     'create' => 'configuration.categories.create', //pergi ke page create
     'store' => 'configuration.categories.store', //store data
@@ -69,8 +70,19 @@ Route::resource('configuration/categories', CategoryController::class)->names([
     'destroy' => 'configuration.categories.delete',
 ]);
 
-Route::get('categories/{category}/subcategories/create', [SubCategoryController::class, 'create'])->name('subcategories.create');
-Route::post('categories/{category}/subcategories', [SubCategoryController::class, 'store'])->name('subcategories.store');
+Route::get('/categories/{category}/subcategories/create', [SubCategoryController::class, 'create'])->name('subcategories.create');
+Route::post('/categories/{category}/subcategories', [SubCategoryController::class, 'store'])->name('subcategories.store');
+
+Route::resource('/configuration/orderlist', OrderListController::class)->names([
+    'index' => 'configuration.orderlist.index', //list
+    'create' => 'configuration.orderlist.create', //pergi ke page create
+    'store' => 'configuration.orderlist.store', //store data
+    'edit' => 'configuration.orderlist.edit', //pergi ke page edit
+    'update' => 'configuration.orderlist.update', 
+    'show' => 'configuration.orderlist.show', //update data
+    'destroy' => 'configuration.orderlist.delete', 
+    'dashboard' => 'configuration.orderlist.dashboard', //Dashboard page view
+]);
 
 
 

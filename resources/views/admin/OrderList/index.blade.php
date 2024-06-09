@@ -15,32 +15,38 @@
                                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                                     </svg>
                                 </div>
-                                <form action="{{ route('configuration.users.index') }}" method="GET">
+                                <form action="{{ route('configuration.orderlist.index') }}" method="GET">
                                 <input type="text" name="search" value="{{$search}}" onkeydown="if (event.key === 'Enter') this.form.submit()" id="simple-search" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full pl-10 p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Search" required="">
                                 </form>
                             </div>
                         </form>
                     </div>
                     <div class="w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0">
-                        <a href="{{ route('configuration.users.create') }}">
+                    @php($user = Auth::user()) 
+                    @if($user->role == 'System Admin' || $user->role == 'User')
+                    <a href="{{ route('configuration.orderlist.create') }}">
                         <button type="button" id="createProductModalButton" data-modal-target="createProductModal" data-modal-toggle="createProductModal" class="flex items-center justify-center text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
                             <svg class="h-3.5 w-3.5 mr-2" fill="currentColor" viewbox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                                 <path clip-rule="evenodd" fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" />
                             </svg>
-                            Add New User
+                            Add New Order List
                         </button>
                         </a>
-                        
+                    @endif
                     </div>
+
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                             <tr>
                                 <th scope="col" class="px-4 py-4">#</th>
-                                <th scope="col" class="px-4 py-3">Name</th>
+                                <th scope="col" class="px-4 py-3">Order ID</th>
+                                <th scope="col" class="px-4 py-3">Order Date</th>
+                                <th scope="col" class="px-4 py-3">Zone</th>
                                 <th scope="col" class="px-4 py-3">Email</th>
-                                <th scope="col" class="px-4 py-3">Role</th>
+                                <th scope="col" class="px-4 py-3">Collection Date</th>
+                                <th scope="col" class="px-4 py-3">Collector</th>
                                 <th scope="col" class="px-4 py-3">Status</th>
                                 <th scope="col" class="px-4 py-3">
                                     <span class="sr-only">Actions</span>
@@ -49,27 +55,20 @@
                         </thead>
                         <tbody>
                             @php($i=0)
-                            @foreach($users as $user)
+                            @foreach($orderlists as $orderlist)
                             <tr class="border-b dark:border-gray-700">
                                 <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                                <td class="px-4 py-3">{{ $user->name }}</td>
-                                <td class="px-4 py-3">{{ $user->email }}</td>
-                                <td class="px-4 py-3">{{ $user->role }}</td>
-                                <td class="px-4 py-3">
-                                @if($user->status == 1)  
-                                    <div>
-                                    Active
-                                    </div>
-                                @else 
-                                    <div>
-                                    Inactive
-                                    </div>
-                                @endif
-                                </td>
+                                <td class="px-4 py-3">{{ $orderlist->orderid }}</td>
+                                <td class="px-4 py-3">{{ $orderlist->orderdate }}</td>
+                                <td class="px-4 py-3">{{ $orderlist->zone }}</td>
+                                <td class="px-4 py-3">{{ $orderlist->email }}</td>
+                                <td class="px-4 py-3">{{ $orderlist->collectdate }}</td>
+                                <td class="px-4 py-3">{{ $orderlist->collector }}</td>
+                                <td class="px-4 py-3">{{ $orderlist->status}} </td>
                                 <td class="px-4 py-3 flex items-center justify-end">
                                 <div class="flex items-center space-x-4">
-                                <a href="{{ route('configuration.users.edit', $user->id) }}">
-                                    <button type="button"  class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                <a href="{{ route('configuration.orderlist.edit', $orderlist->id) }}">
+                                    <button type="button" class="py-2 px-3 flex items-center text-sm font-medium text-center text-white bg-primary-700 rounded-lg hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2 -ml-0.5" viewbox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                             <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
@@ -78,15 +77,15 @@
                                     </button>
                                 </a>
                                     
-                                    <button type="button" aria-controls="drawer-read-product-advanced" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                                    <button type="button" class="py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
                                             <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
                                             <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
                                         </svg>
                                         Show
                                     </button>
-
-                                    <form method="POST" action="{{ route('configuration.users.delete', $user->id) }}" onsubmit="return confirm('Are you sure you want to delete this item?')">
+                                     @if($user->role == 'System Admin' || $user->role == 'User')
+                                    <form method="POST" action="{{ route('configuration.orderlist.delete', $orderlist->id) }}" onsubmit="return confirm('Are you sure you want to delete this item?')">
                                         @csrf
                                         @method('DELETE')
                                         <button class="flex items-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
@@ -95,7 +94,8 @@
                                             </svg>
                                             Delete
                                         </button>
-                                </form>
+                                    </form>
+                                    @endif
                                 </div>
                                 </td>
                             </tr>
