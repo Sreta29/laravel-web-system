@@ -22,7 +22,7 @@ class OrderListController extends Controller
         if ($user->role == 'User') {
             $orderlistQuery->where('userid', $user->id);
         } elseif ($user->role == 'Wastage Collector') {
-            $orderlistQuery->where('collector', $user->name);
+            $orderlistQuery->where('collector', $user->name)->where('status','Schedule');
         }
 
         // Apply search conditions
@@ -65,7 +65,11 @@ class OrderListController extends Controller
             'add_address' => 'required',
             'wastetype_id' => 'nullable',
             'userid' => 'nullable',
+            'customerimg' => 'nullable',
+            'collactorimg' => 'nullable',
+            'phonenum' => 'nullable',
         ]);
+
 
         $user = Auth::user();
 
@@ -81,7 +85,7 @@ class OrderListController extends Controller
     /**
      * Display the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
         $orderlist = OrderList::find($id);
         $collectors = User::where('role','Wastage Collector')->get();
@@ -102,15 +106,16 @@ class OrderListController extends Controller
     public function update(Request $request, string $id)
     {
         $validated = $request->validate([
-            'orderid' => 'nullable',
-            'orderdate' => 'required',
-            'zone' => 'required',
-            'email' => 'required',
+            'orderdate' => 'nullable',
+            'zone' => 'nullable',
+            'email' => 'nullable',
             'collectdate' => 'nullable',
             'collector' => 'nullable',
             'status' => 'nullable',
-            'add_address' => 'required',
-            'wastetype_id' => 'nullable'
+            'add_address' => 'nullable',
+            'wastetype_id' => 'nullable',
+            'collectorimg' => 'nullable',
+            'phonenum' => 'nullable',
         ]);
 
         $orderlist = OrderList::find($id);

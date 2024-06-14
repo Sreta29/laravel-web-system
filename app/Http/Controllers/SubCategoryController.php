@@ -10,14 +10,16 @@ class SubCategoryController extends Controller
 {
     public function create(Category $category)
     {
-        
+    
         return view('admin/SubCategory/create', compact('category'));
     }
 
-    public function store(Request $request, Category $category)
+    public function store(Request $request, $category)
     {
-        $request->validate(['name' => 'required']);
-        $category->subCategories()->create($request->all());
+        $validated = $request->validate(['name' => 'required','category_id' => 'nullable']);
+        $validated['category_id'] = $category;
+        SubCategory::create($validated);
+        // $category->subCategories()->create($request->all());
         return redirect()->route('configuration.categories.show', $category);
     }
 }

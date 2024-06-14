@@ -27,7 +27,10 @@ class OrderList extends Model
         'status',
         'add_address',
         'wastetype_id',
-        'userid'
+        'userid',
+        'customerimg',
+        'collectorimg',
+        'phonenum'
     ];
 
     /**

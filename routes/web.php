@@ -10,6 +10,7 @@ use App\Http\Controllers\SubCategoryController;
 use App\Models\ConfigurationCode;
 use App\Models\Role;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PayController;
 
 
 /*
@@ -30,6 +31,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -70,8 +73,15 @@ Route::resource('/configuration/categories', CategoryController::class)->names([
     'destroy' => 'configuration.categories.delete',
 ]);
 
-Route::get('/categories/{category}/subcategories/create', [SubCategoryController::class, 'create'])->name('subcategories.create');
-Route::post('/categories/{category}/subcategories', [SubCategoryController::class, 'store'])->name('subcategories.store');
+
+Route::resource('/configuration/{category}/subcategories', SubCategoryController::class)->names([
+    'index' => 'subcategories.index', //list
+    'create' => 'subcategories.create', //pergi ke page create
+    'store' => 'subcategories.store', //store data
+    'update' => 'subcategories.edit', //pergi ke page edit
+    'show' => 'subcategories.show', //update data
+    'destroy' => 'subcategories.delete',
+]);
 
 Route::resource('/configuration/orderlist', OrderListController::class)->names([
     'index' => 'configuration.orderlist.index', //list
@@ -81,7 +91,16 @@ Route::resource('/configuration/orderlist', OrderListController::class)->names([
     'update' => 'configuration.orderlist.update', 
     'show' => 'configuration.orderlist.show', //update data
     'destroy' => 'configuration.orderlist.delete', 
-    'dashboard' => 'configuration.orderlist.dashboard', //Dashboard page view
+]);
+
+Route::resource('/configuration/{id}/pay', PayController::class)->names([
+    'index' => 'pay.index', //list
+    'create' => 'pay.create', //pergi ke page create
+    'store' => 'pay.store', //store data
+    'edit' => 'pay.edit', //pergi ke page edit
+    'update' => 'pay.update', 
+    'show' => 'pay.show', //update data
+    'destroy' => 'pay.delete', 
 ]);
 
 

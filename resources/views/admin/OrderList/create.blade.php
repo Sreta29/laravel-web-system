@@ -15,6 +15,8 @@
         <form method="post" action="{{ route('configuration.orderlist.store') }}" enctype="multipart/form-data">
             @csrf
                 <div class="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
+                @php($user = Auth::user()) 
+                    @if($user->role == 'User')
                     <!-- <div class="sm:col-span-2">
                         <label for="orderid" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Order ID</label>
                         <input type="text" name="orderid" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
@@ -37,8 +39,9 @@
                         @enderror
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                        <textarea id="message" rows="4" name="add_address" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here..."></textarea>
+                        <label for="address_line1" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                        <textarea id="message" rows="4" name="add_address" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Address Line 1"></textarea><br>
+                        <!-- <textarea id="message" rows="4" name="address_line2" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Address Line 2"></textarea> -->
                         @error('address')
                             <span class="text-red-500">{{ $message }}</span>
                         @enderror
@@ -51,6 +54,20 @@
                             <span class="text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
+                    
+                    <div class="sm:col-span-2">
+                        <label for="phonenum" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
+                        <input type="phonenum" name="phonenum" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                        @error('phonenum')
+                            <span class="text-red-500">{{ $message }}</span>
+                        @enderror
+                    
+                    <div class="sm:col-span-2">
+                        <label for="collector" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer Evidence and Remark</label>
+                        <div id="editor" class="h-40 mb-5"></div>
+                        <input type="hidden" id="editor-customer" name="customerimg">
+                    </div>
+                    @endif                    
                     @php($user = Auth::user()) 
                     @if($user->role == 'System Admin')
                         <div class="sm:col-span-2">
@@ -61,7 +78,7 @@
                             @enderror
                         </div>
                         <div class="sm:col-span-2">
-                            <label for="collector" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waste Type</label>
+                        <label for="collector" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Waste Type</label>
                             <select id="roles" name="wastetype_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                 <option>Choose a Waste</option>
                                 <option value="Oversized Waste">Oversized Waste</option>
@@ -101,12 +118,13 @@
                         </div>
                     @endif
                 </div>
+                
             <div class="flex items-center space-x-4">
             <button type="submit" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">
                 Submit
             </button>
 
-                <a href="{{ route('configuration.orderlist.index') }}" class="button-style">
+                <a href="{{ route('configuration.categories.index') }}" class="button-style">
                 <button type="button" class="text-red-600 inline-flex items-center hover:text-white border border-red-600 hover:bg-red-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900">
                     Cancel
                 </button>
@@ -115,3 +133,29 @@
     </div>
 </section>
 @endsection <!-- End the content section -->
+</body>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var quillUlasanSemak = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    ['bold', 'italic', 'underline', 'strike','image'],
+                    [{
+                        'list': 'ordered'
+                    }, {
+                        'list': 'bullet'
+                    }],
+                ],
+            }
+        });
+
+        quillUlasanSemak.on('text-change', function() {
+            var html = quillUlasanSemak.root.innerHTML;
+            document.querySelector('#editor-customer').value = html;
+            // @this.set('customerimg', html);
+            // console.log('Ulasan:', html);
+        });
+    });
+</script>
