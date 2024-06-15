@@ -47,66 +47,6 @@
                             <span class="text-red-500">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div id="map">
-                        
-                        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-                        <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
-                        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
-                        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
-                        <script>
-                            // Initialize the map
-                        var map = L.map('map').setView([51.505, -0.09], 13);
-
-                        // Add OpenStreetMap tile layer
-                        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                        }).addTo(map);
-
-                        // Add geocoder control for searching locations
-                        var geocoder = L.Control.geocoder({
-                        defaultMarkGeocode: false
-                        })
-                        .on('markgeocode', function(e) {
-                        var bbox = e.geocode.bbox;
-                        var poly = L.polygon([
-                            bbox.getSouthEast(),
-                            bbox.getNorthEast(),
-                            bbox.getNorthWest(),
-                            bbox.getSouthWest()
-                        ]).addTo(map);
-                        map.fitBounds(poly.getBounds());
-                        })
-                        .addTo(map);
-
-                        // Example coordinates for start and end points
-                        var start = [51.505, -0.09];  // Replace with your start latitude and longitude
-                        var end = [51.515, -0.1];     // Replace with your end latitude and longitude
-
-                        // Add markers for start and end points
-                        L.marker(start).addTo(map).bindPopup('Start Location').openPopup();
-                        L.marker(end).addTo(map).bindPopup('End Location').openPopup();
-
-                        // Function to get route from OpenRouteService
-                        function getRoute(start, end) {
-                            const orsApiKey = 'your-openrouteservice-api-key';  // Replace with your OpenRouteService API key
-                            const url = `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${orsApiKey}&start=${start[1]},${start[0]}&end=${end[1]},${end[0]}`;
-
-                            axios.get(url)
-                            .then(response => {
-                                const route = response.data.features[0].geometry.coordinates;
-                                const latLngs = route.map(coord => [coord[1], coord[0]]);
-                                L.polyline(latLngs, { color: 'blue' }).addTo(map);
-                                map.fitBounds(L.polyline(latLngs).getBounds());
-                            })
-                            .catch(error => {
-                                console.error('Error fetching route:', error);
-                            });
-                        }
-
-                        // Get and display the route
-                        getRoute(start, end);
-                        </script>
-                    </div>
 
                     <div class="sm:col-span-2">
                         <label for="user" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Customer Evidence and Remark</label>
@@ -146,7 +86,7 @@
                     </div>
                     <div class="sm:col-span-2">
                         <label for="phonenum"  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone Number</label>
-                        <input type="phonenum" value="{{ $orderlist->phonenum }}" name="phonenum" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" readonly>
+                        <input type="number" value="{{ $orderlist->phonenum }}" name="phonenum" class="bg-gray-200 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" readonly>
                         @error('phonenum')
                             <span class="text-red-500">{{ $message }}</span>
                         @enderror

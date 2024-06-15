@@ -11,7 +11,7 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         return view('admin/Category/index', compact('categories'));
-        
+
     }
 
     public function create()
@@ -32,5 +32,7 @@ class CategoryController extends Controller
         $subCategories = $category->subCategories;
         return view('admin/Category/show', compact('category', 'subCategories'));
     }
+
+    
 }
 
